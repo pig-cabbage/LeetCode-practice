@@ -233,4 +233,25 @@ public class 动态规划 {
         }
         return dp[m-1][n-1];
     }
+    //给出一个三角形，计算从三角形顶部到底部的最小路径和，每一步都可以移动到下面一行相邻的数字，
+    public int minimumTotal(ArrayList<ArrayList<Integer>> triangle) {
+        int len=triangle.get(triangle.size()-1).size();
+        int [][]dp=new int[len][len];
+        for(int i=1;i<len;i++){
+            dp[i][0]=dp[i-1][0]+triangle.get(i).get(0);
+            dp[i][i]=dp[i-1][i-1]+triangle.get(i).get(i);
+        }
+
+        for(int i=1;i<len;i++){
+            for(int j=1;j<i;j++){
+                dp[i][j]=Math.min(dp[i-1][j-1],dp[i-1][j])+triangle.get(i).get(j);
+            }
+        }
+        int result=Integer.MAX_VALUE;
+        for(int i=0;i<len;i++){
+            result=Math.min(dp[len-1][i],result);
+        }
+        return result;
+
+    }
 }

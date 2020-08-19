@@ -1,4 +1,5 @@
 import javax.swing.tree.TreeNode;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class 深度优先检索 {
@@ -210,11 +211,91 @@ public class 深度优先检索 {
            }
         }
     }
+    //现在有一个仅包含‘X’和‘O’的二维板，请捕获所有的被‘X’包围的区域
+    //捕获一个被包围区域的方法是将被包围区域中的所有‘O’变成‘X’
+    public void solve(char[][] board) {
+        int m=board.length;
+        int n=board[0].length;
+        int[][]fangfa={{-1,0},{0,1},{1,0},{0,-1}};
+        boolean[][]visited=new boolean[m][n];
+        char [][]newBoard=new char[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0; j<n;j++){
+                newBoard[i][j]='X';
+                visited[i][j]=false;
+            }
+        }
+        for(int j=0;j<n;j++){
+            if(board[0][j]=='O'&&visited[0][j]==false){
+                visited[0][j]=true;
+                newBoard[0][j]='O';
+                dfs(board,newBoard,visited,fangfa,0,j,m,n);
+            }
+        }
+        for(int j=0;j<n;j++){
+            if(board[m-1][j]=='O'&&visited[m-1][j]==false){
+                visited[m-1][j]=true;
+                newBoard[m-1][j]='O';
+                dfs(board,newBoard,visited,fangfa,m-1,j,m,n);
+            }
+        }
+        for(int i=0;i<m;i++){
+            if(board[i][0]=='O'&&visited[i][0]==false){
+                visited[i][0]=true;
+                newBoard[i][0]='O';
+                dfs(board,newBoard,visited,fangfa,i,0,m,n);
+            }
+        }
+        for(int i=0;i<m;i++){
+            if(board[i][n-1]=='O'&&visited[i][n-1]==false){
+                visited[i][n-1]=true;
+                newBoard[i][n-1]='O';
+                dfs(board,newBoard,visited,fangfa,i,n-1,m,n);
+            }
+        }
+        for(int i=0;i<m;i++){
+            System.out.println(Arrays.toString(newBoard[i]));
+        }
+        board=newBoard;
+        for(int i=0;i<m;i++){
+            System.out.println(Arrays.toString(board[i]));
+        }
+
+
+    }
+    public void dfs(char[][]board,char[][]newBoard,boolean[][]visited,int[][]fangfa,int i,int j,int m,int n){
+        for(int a=0;a<4;a++){
+            int newI=i+fangfa[a][0];
+            int newJ=j+fangfa[a][1];
+            if(newI>=0&&newI<m&&newJ>=0&&newJ<n&&visited[newI][newJ]==false&&board[newI][newJ]=='O'){
+                newBoard[newI][newJ]='O';
+                visited[newI][newJ]=true;
+                dfs(board,newBoard,visited,fangfa,newI,newJ,m,n);
+            }
+        }
+    }
+    //给定两个单词（初始单词和目标单词）和一个单词字典，请找出所有的从初始单词到目标单词的最短转换序列的长度：
+    //因为是取最短的路径，所以采用广度度优先搜索的方法
+    // 不需要深度优先一样找出所有的路径，一地个满足条件的路径就是最小值。
+
+
+
     public static void main(String[]args){
         深度优先检索 temp=new 深度优先检索();
-        int[]input={5,3,6,1,2,5,1,7};
-        temp.getTargetList(input,15);
-        System.out.println(temp.resultList);
+        String start="hot";
+        String end="dog";
+        HashSet<String>l=new HashSet<>();
+
+        l.add("hot");
+        l.add("cog");
+        l.add("dog");
+        l.add("tot");
+        l.add("hog");
+        l.add("hop");
+        l.add("pot");
+        l.add("dot");
+
+
     }
 
 }

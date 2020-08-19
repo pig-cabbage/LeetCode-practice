@@ -368,12 +368,44 @@ public class 贪心算法 {
         }
         return -1;
     }
+    //买卖股票求最大利润，可以交易两次，设置四个用户余额状态量，变量更新，最后输出第四个状态量
+    public int maxProfit1 (int[] prices) {
+        // write code here
+        int buy1=Integer.MAX_VALUE;
+        int sell1=0;
+        int buy2=Integer.MIN_VALUE;
+        int sell2=0;
+        for(int i=0;i<prices.length;i++){
+            buy1=Math.min(buy1,prices[i]);
+            sell1=Math.max(sell1,prices[i]-buy1);
+            System.out.println(sell1);
+            buy2=Math.max(buy2,sell1-prices[i]);
+            System.out.println(buy2);
+            sell2=Math.max(sell2,prices[i]+buy2);
+        }
+        return sell2;
+    }
+    //假设你有一个数组，其中第i个元素表示某只股票在第i天的价格。
+    //设计一个算法来寻找最大的利润。你可以完成任意数量的交易(例如，多次购买和出售股票的一股)。但是，你不能同时进行多个交易(即，你必须在再次购买之前卖出之前买的股票)。
+    //只要后面的值比前一个大，就加上差值。
+    public int maxProfit3 (int[] prices) {
+        // write code here
+        if(prices==null || prices.length<2)
+            return 0;
+        int res=0;
+        for(int i=1;i<prices.length;i++){
+            if(prices[i]>prices[i-1])
+                res+=prices[i]-prices[i-1];
+        }
+        return res;
+
+    }
 
 
     public static void main(String[] args) {
         贪心算法 k=new 贪心算法();
-        int[]input={7,6,5,4,3,2,1};
-        System.out.println(k.maxProfit(input));
+        int[]input={2,1,4};
+        System.out.println(k.maxProfit1(input));
 //        System.out.println(Arrays.toString(k.findContinuousSequence(9)[0]));
 //        Scanner sc = new Scanner(System.in);
 //       String input=sc.next();

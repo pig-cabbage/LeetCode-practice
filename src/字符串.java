@@ -239,56 +239,90 @@ public class 字符串 {
     //计算将字符串s分割成回文分割结果的最小切割数
     //例如:给定字符串s="aab",
     //返回1，因为回文分割结果["aa","b"]是切割一次生成的。
+    //采用动态规划的方法，dp[i][j]表示从从i到j的字符子串的最小切割数，转移方程为 dp[i][j] = Math.min(dp[i][j], dp[i][a] + dp[a + 1][j] + 1);
     public int minCut (String s) {
         // write code here
-
-        int a=min(s);
-
-        StringBuffer temp=new StringBuffer();
-        temp.append(s);
-        temp=temp.reverse();
-        int b=min(temp.toString());
-        return a<=b?a:b;
-
-    }
-    public int min(String s){
-        if(isHuiWen(s)){
-            return 0;
-        }
         int size=s.length();
-        int result=0;
-        int end=1;
+        int[][]dp=new int[size][size];
+        for(int i=0;i<size;i++){
+            for(int j=i;j<size;j++){
+                if(isReserve(s,i,j)){
 
-        while(size>1) {
-            for (int i = size; i >= 1; i--) {
-                if (isHuiWen(s.substring(0, i))) {
-                    end = i;
-                    result += 1;
-                    break;
+                    dp[i][j]=0;
+                }else
+                dp[i][j]=Integer.MAX_VALUE;
+            }
+        }
+        for(int k=1;k<size;k++) {
+            for (int i = 0, j = k; i < size - 1&&j<size; i++, j++) {
+                for (int a = i; a < j; a++) {
+                    dp[i][j] = Math.min(dp[i][j], dp[i][a] + dp[a + 1][j] + 1);
                 }
             }
-
-            s=s.substring(end,size);
-            size=s.length();
         }
-        return result;
+        for(int i=0;i<size;i++){
+            System.out.println(Arrays.toString(dp[i]));
+        }
+        return dp[0][size-1];
+       
 
     }
-    public boolean isHuiWen(String s){
+    //给定一个字符串s，分割s使得s的每一个子串都是回文串
+    //返回所有的回文分割结果。（注意：返回结果的顺序需要和输入字符串中的字母顺序一致。）
+    //例如:给定字符串s="aab",
+    //要找出所有的结果的方法一般都是深度优先
+    ArrayList<ArrayList<String>>result=new ArrayList<>();
+    public ArrayList<ArrayList<String>> partition (String s) {
 
-        StringBuffer temp=new StringBuffer();
-        temp.append(s);
-        temp=temp.reverse();
-        if(s.equals(temp.toString())){
+        int size=s.length();
+        for(int i=0;i<size;i++){
+            ArrayList<String>temp=new ArrayList<>();
+            if(isReserve(s,0,i)){
+                temp.add(s.substring(0,i+1));
+                String k=s.substring(i+1,size);
+                DFS(k,temp);
+            }
+        }
+        return result;
+    }
+    public void DFS(String s,ArrayList<String>temp){
+        int size=s.length();
+        if(size==0){
+            ArrayList<String>p=new ArrayList<>();
+            p.addAll(temp);
+            result.add(p);
+            return ;
+        }
+
+        else{
+            for(int i=0;i<size;i++){
+                if(isReserve(s,0,i)){
+                    temp.add(s.substring(0,i+1));
+                    String k=s.substring(i+1,size);
+                    DFS(k,temp);
+                    temp.remove(temp.size()-1);
+
+                }
+            }
+        }
+    }
+    public boolean isReserve(String s,int a,int b){
+        String temp=s.substring(a,b+1);
+
+        StringBuffer k=new StringBuffer();
+        k.append(temp);
+        k=k.reverse();
+        if(temp.equals(k.toString())){
             return true;
         }
         return false;
     }
 
+
     public static void main(String[]args){
         字符串 temp=new 字符串();
-        String s="add";
+        String s="cdd";
 
-        System.out.println(temp.minCut(s));
+        System.out.println(temp.partition(s).toString());
     }
 }

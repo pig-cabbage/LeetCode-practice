@@ -205,60 +205,90 @@ public class 数组 {
 
 
 
-
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        Map<Integer, Integer> input = new HashMap<>();
-        List<Integer> temp = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            int k = sc.nextInt();
-            temp.add(k);
-            input.put(i, k);
-        }
-        int result = 0;
-        boolean flag=true;
-        while (flag) {
-            List<Map.Entry<Integer, Integer>> list_set = new ArrayList<>(input.entrySet());
-            Collections.sort(list_set, new Comparator<Map.Entry<Integer,Integer>>() {
-                @Override
-                public int compare(Map.Entry<Integer,Integer> o1, Map.Entry<Integer,Integer> o2) {
-                    if(o1.getValue()==o2.getValue()){
-                        return o1.getKey()-o2.getKey();
-                    }else {
-                        return o1.getValue() - o2.getValue();
+    public long minimumValueAfterDispel (int[] nums) {
+        long result = Integer.MAX_VALUE;
+        // write code here
+        int size = nums.length;
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = i; j < size; j++) {
+                int[] temp = nums.clone();
+                for (int a = 0; a < size; a++) {
+                    if (temp[a] >= temp[i]) {
+                        temp[a] -= temp[i];
                     }
                 }
-            });
-
-            int i = 0;
-            int index = list_set.get(i).getKey();
-
-System.out.println(index);
-            if(input.get(index)==0){
-                break;
+                for (int a = 0; a < size; a++) {
+                    if (temp[a] >= temp[j]) {
+                        temp[a] -= temp[j];
+                    }
+                }
+                long sum = 0;
+                for (int a = 0; a < size; a++) {
+                    sum += temp[a];
+                }
+                if (sum < result)
+                    result = sum;
             }
-            if(index==0&&input.get(index)==1){
-                result+=list_set.size();
-                break;
-            }
-            if(index==0){
-                result+=list_set.get(index).getValue()*list_set.size();
-                break;
-            }
-            result += index;
-//            System.out.println(index);
-//            System.out.println(result);
-
-            for (int p = 0; p < index; p++) {
-                input.put(p, input.get(p) - 1);
-            }
-            System.out.println(result);
-
-
         }
-        System.out.println(result);
+        return result;
     }
+
+    public static void main(String[] args) {
+        数组 test=new 数组();
+        int[]input={2,1,3};
+        System.out.println(test.minimumValueAfterDispel(input));
+//        Scanner sc = new Scanner(System.in);
+//        int n = sc.nextInt();
+//        Map<Integer, Integer> input = new HashMap<>();
+//        List<Integer> temp = new ArrayList<>();
+//        for (int i = 0; i < n; i++) {
+//            int k = sc.nextInt();
+//            temp.add(k);
+//            input.put(i, k);
+//        }
+//        int result = 0;
+//        boolean flag=true;
+//        while (flag) {
+//            List<Map.Entry<Integer, Integer>> list_set = new ArrayList<>(input.entrySet());
+//            Collections.sort(list_set, new Comparator<Map.Entry<Integer,Integer>>() {
+//                @Override
+//                public int compare(Map.Entry<Integer,Integer> o1, Map.Entry<Integer,Integer> o2) {
+//                    if(o1.getValue()==o2.getValue()){
+//                        return o1.getKey()-o2.getKey();
+//                    }else {
+//                        return o1.getValue() - o2.getValue();
+//                    }
+//                }
+//            });
+//
+//            int i = 0;
+//            int index = list_set.get(i).getKey();
+//
+//System.out.println(index);
+//            if(input.get(index)==0){
+//                break;
+//            }
+//            if(index==0&&input.get(index)==1){
+//                result+=list_set.size();
+//                break;
+//            }
+//            if(index==0){
+//                result+=list_set.get(index).getValue()*list_set.size();
+//                break;
+//            }
+//            result += index;
+////            System.out.println(index);
+////            System.out.println(result);
+//
+//            for (int p = 0; p < index; p++) {
+//                input.put(p, input.get(p) - 1);
+//            }
+//            System.out.println(result);
+//
+//
+//        }
+//        System.out.println(result);
+    }
+
 
 }

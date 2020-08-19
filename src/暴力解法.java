@@ -1,8 +1,7 @@
 import jdk.internal.org.objectweb.asm.Handle;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.sql.Array;
+import java.util.*;
 
 public class 暴力解法 {
      public static class Point {
@@ -111,6 +110,7 @@ public class 暴力解法 {
         return maxValue;
 
     }
+
     public static void main(String[] args) {
         暴力解法 temp=new 暴力解法();
         Point a=new Point(0,0);

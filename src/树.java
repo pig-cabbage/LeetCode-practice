@@ -11,6 +11,14 @@ public class 树 {
             value=val;
         }
     }
+    public static class TreeNode{
+        TreeNode left;
+        TreeNode right;
+        int val;
+        TreeNode(int value){
+            val=value;
+        }
+    }
     //判断树是否为二叉寻找树
     //通过设置最小值和最大值
     public boolean isBTS(Node root,int min,int max){
@@ -362,14 +370,83 @@ return result;
 
 
     }
+    static int sum=0;
+    public int sumNumbers (TreeNode root) {
+        // write code here
+        if(root==null){
+            return 0;
+        }else{
+            StringBuffer temp=new StringBuffer();
+            help(root,temp);
+            return sum;
+        }
+    }
+    public int help(TreeNode root,StringBuffer temp){
+        if(root.left==null&&root.right==null){
+
+            String k=root.val+"";
+            temp.append(k);
+
+            sum+=Integer.valueOf(temp.toString());
+            temp.delete(temp.length()-k.length(),temp.length());
+            return 0;
+        }else{
+            String k=root.val+"";
+            temp.append(k);
+
+            if(root.left!=null){
+                help(root.left,temp);
+            }
+            if(root.right!=null){
+                help(root.right,temp);
+            }
+            temp.delete(temp.length()-k.length(),temp.length());
+
+        }
+        return 0;
+    }
+    public static  int result1=Integer.MIN_VALUE;
+    public int maxPathSum (TreeNode root) {
+        // write code here
+        if(root==null)
+            return 0;
+        result1=root.val;
+        diedai(root);
+        return result1;
+
+    }
+    public int diedai(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        else{
+            int left=diedai(root.left);
+            int right=diedai(root.right);
+            System.out.println(left);
+            System.out.println(right);
+            int temp=0;
+            if(left<0)
+                temp=right+root.val;
+            if(right<0)
+                temp=left+root.val;
+            if(left>=0&&right>=0)
+                temp=right+left+root.val;
+
+            if(temp>result1)
+                result1=temp;
+            return Math.max(left,right)+root.val;
+
+        }
+    }
     public static  void main(String[]args){
         树 test=new 树();
-        Node k=new Node(1);
-        k.left=new Node(2);
-        k.right=new Node(3);
-        k.right.left=new Node(4);
-        k.right.right=new Node(5);
-        test.serialize(k);
+        TreeNode k=new TreeNode(1);
+        k.left=new TreeNode(-2);
+        k.right=new TreeNode(3);
+
+
+        test.maxPathSum(k);
+        System.out.println(result1);
 
     }
 }
